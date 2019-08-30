@@ -1,24 +1,13 @@
-/**
- * Send a user a link to their avatar
- */
-
-// Import the discord.js module
 const Discord = require('discord.js');
 const axios = require('axios');
 const config = require('./config.json');
 
-// Create an instance of a Discord client
 const bot = new Discord.Client();
 
-/**
- * The ready event is vital, it means that only _after_ this will your bot start reacting to information
- * received from Discord
- */
 bot.on('ready', () => {
     console.log('LEGENDBOT ONLINE');
 });
 
-// Create an event listener for messages
 bot.on('message', message => {
     const {content} = message;
     if (content.substring(0, 1) == '!') {
@@ -47,5 +36,4 @@ bot.on('message', message => {
     }
 });
 
-// Log our bot in using the token from https://discordapp.com/developers/applications/me
 bot.login(config.discordkey);
