@@ -6,6 +6,8 @@ const {formatChat} = require('./helpers/chat-helpers');
 
 const bot = new Discord.Client();
 
+const weatherUrl = 'http://api.openweathermap.org/data/2.5/forecast';
+
 bot.on('ready', () => {
     console.log('LEGENDBOT ONLINE');
 });
@@ -27,7 +29,7 @@ bot.on('message', message => {
                 try {
                     axios
                         .get(
-                            `http://api.openweathermap.org/data/2.5/forecast?q=${city},${country}&units=metric&APPID=${config.weatherkey}`
+                            `${weatherUrl}?q=${city},${country}&units=metric&APPID=${config.weatherkey}`
                         )
                         .then(res => {
                             const list = res.data.list;
