@@ -8,6 +8,7 @@ config.json
 /.pnp
 .pnp.js
 .idea
+.prettierrc
 
 # testing
 /coverage

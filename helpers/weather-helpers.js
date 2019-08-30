@@ -1,4 +1,4 @@
-const formatChat = week => {
+const formatWeather = week => {
     return week.map(d => {
         const date = new Date(d.day);
         const day = date.toString().substring(0, 4);
@@ -9,5 +9,5 @@ const formatChat = week => {
 };
 
 module.exports = {
-    formatChat
+    formatWeather,
 };
