@@ -18,7 +18,7 @@ bot.on('ready', () => {
 });
 
 bot.on('message', message => {
-        const {cmd, args} = handleCommand(message);
+        const {cmd, args} = handleCommand(message) || {};
         switch (cmd) {
             case 'ping':
                 message.channel.send('Pong!');
