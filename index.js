@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const _ = require('lodash');
 const config = require('./config.json');
 
 const { handleWeather } = require('./helpers/weather-helpers');
@@ -13,7 +14,7 @@ const youTube = new YouTube();
 youTube.setKey(config.youtubekey);
 
 bot.on('ready', () => {
-    console.log('LEGENDBOT ONLINE');
+    console.log('LegendBot Ready');
     bot.user.setPresence({
         game: {
             name: 'my code',
@@ -35,30 +36,48 @@ bot.on('message', async message => {
         case 'play':
             if (message.member.voiceChannel) {
                 const connection = await message.member.voiceChannel.join();
-                youTube.search(args[0] + args[1] + args[2], 1, (error, res) => {
-                    if (error) {
-                        console.error(error);
-                    } else {
-                        console.log(res);
-                        const id = res.items[0].id.videoId;
-                        const dispatcher = connection.playStream(
-                            ytdl(`https://www.youtube.com/watch?v=${id}`, {
-                                filter: 'audioonly',
-                                volume: 0.1,
-                            }),
-                        );
-                        dispatcher.on('end', () => {
-                            message.channel.send('Finished playing!');
-                            message.member.voiceChannel.leave();
-                        });
-                    }
-                });
+                if (args[0].startsWith('https://www.youtube.com/watch?v=')) {
+                    const query = args[0].substring(32);
+                    youTube.getById(query, (error, res) => {
+                        if (error) {
+                            console.error(error);
+                        } else {
+                            const id = res.items[0].id;
+                            const dispatcher = connection.playStream(
+                                ytdl(`https://www.youtube.com/watch?v=${id}`, {
+                                    filter: 'audioonly',
+                                    volume: 0.1,
+                                }),
+                            );
+                        }
+                    });
+                } else {
+                    youTube.search(args.join(''), 1, (error, res) => {
+                        if (error) {
+                            console.error(error);
+                        } else {
+                            if (!_.isEmpty(res.items)) {
+                                const id = res.items[0].id.itemId;
+                                const dispatcher = connection.playStream(
+                                    ytdl(
+                                        `https://www.youtube.com/watch?v=${id}`,
+                                        {
+                                            filter: 'audioonly',
+                                            volume: 0.1,
+                                        },
+                                    ),
+                                );
+                            } else {
+                                message.reply('Wtf song is that?');
+                            }
+                        }
+                    });
+                }
             } else {
                 message.reply('You need to join a voice channel first!');
             }
             break;
         case 'kick':
-            console.log('KICKING');
             message.member.voiceChannel.leave();
     }
 });
