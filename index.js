@@ -1,13 +1,9 @@
 const Discord = require('discord.js');
-const _ = require('lodash');
 const config = require('./config.json');
 
 const {handleWeather} = require('./helpers/weather-helpers');
-const {handleCommand} = require('./helpers/bot-helpers');
-const {
-    handleYouTubeUrl,
-    handleYouTubeSearch
-} = require('./helpers/youtube-helpers');
+const {handleCommand, handleKick} = require('./helpers/bot-helpers');
+const {handlePlayYouTube} = require('./helpers/youtube-helpers');
 
 const bot = new Discord.Client();
 
@@ -34,18 +30,9 @@ bot.on('message', async message => {
             handleWeather(message, args);
             break;
         case 'play':
-            if (message.member.voiceChannel) {
-                const connection = await message.member.voiceChannel.join();
-                if (args[0].startsWith('https://www.youtube.com/watch?v=')) {
-                    handleYouTubeUrl(args, connection, message);
-                } else {
-                    handleYouTubeSearch(args, connection, message);
-                }
-            } else {
-                message.reply('You need to join a voice channel first!');
-            }
+            handlePlayYouTube(message, args);
             break;
         case 'kick':
-            message.member.voiceChannel.leave();
+            handleKick(message);
     }
 });
