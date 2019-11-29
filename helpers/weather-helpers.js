@@ -42,7 +42,7 @@ const handleWeather = (message, args) => {
             console.log(`Sent weather data for ${res.data.city.name}`);
         })
         .catch(error => {
-            console.log(error.response.data.message);
+            console.error(error.response.data.message);
             message.channel.send(error.response.data.message);
         });
 };
