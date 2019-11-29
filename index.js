@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 const config = require('./config.json');
 
-const {handleWeather} = require('./helpers/weather-helpers');
-const {handleCommand, handleKick} = require('./helpers/bot-helpers');
-const {handlePlayYouTube} = require('./helpers/youtube-helpers');
+const { handleWeather } = require('./helpers/weather-helpers');
+const { handleCommand, handleKick } = require('./helpers/bot-helpers');
+const { handlePlayYouTube, handleStop } = require('./helpers/youtube-helpers');
 
 const bot = new Discord.Client();
 
@@ -14,14 +14,14 @@ bot.once('ready', () => {
     bot.user.setPresence({
         game: {
             name: 'my code',
-            type: 'WATCHING'
+            type: 'WATCHING',
         },
-        status: 'online'
+        status: 'online',
     });
 });
 
 bot.on('message', async message => {
-    const {cmd, args} = handleCommand(message) || {};
+    const { cmd, args } = handleCommand(message) || {};
     switch (cmd) {
         case 'ping':
             message.channel.send('Pong!');
@@ -34,5 +34,7 @@ bot.on('message', async message => {
             break;
         case 'kick':
             handleKick(message);
+        case 'stop':
+            handleStop(message);
     }
 });

@@ -18,7 +18,7 @@ const handleWeather = (message, args) => {
                 days.push({
                     day: day,
                     temp: d.main.temp,
-                    desc: d.weather[0].main
+                    desc: d.weather[0].main,
                 });
             });
             const week = _.uniqBy(days, 'day');
@@ -34,10 +34,10 @@ const handleWeather = (message, args) => {
                                     return `${i}\n`;
                                 })
                                 .join(''),
-                            inline: true
-                        }
-                    ]
-                }
+                            inline: true,
+                        },
+                    ],
+                },
             });
             console.log(`Sent weather data for ${res.data.city.name}`);
         })
@@ -59,5 +59,5 @@ const formatWeather = week => {
 
 module.exports = {
     formatWeather,
-    handleWeather
+    handleWeather,
 };

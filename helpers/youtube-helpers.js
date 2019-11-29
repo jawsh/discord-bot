@@ -30,10 +30,11 @@ const handleYouTubeUrl = (args, connection, message) => {
             connection.playStream(
                 ytdl(`https://www.youtube.com/watch?v=${id}`, {
                     filter: 'audioonly',
-                    volume: 0.1
+                    volume: 0.1,
                 })
             );
-            message.channel.send(`Now playing ${res.items[0].id}`);
+            const title = res.items[0].snippet.title;
+            message.channel.send(`Now playing ${title}`);
         }
     });
 };
@@ -48,9 +49,11 @@ const handleYouTubeSearch = (args, connection, message) => {
                 connection.playStream(
                     ytdl(`https://www.youtube.com/watch?v=${id}`, {
                         filter: 'audioonly',
-                        volume: 0.1
+                        volume: 0.1,
                     })
                 );
+                const title = res.items[0].snippet.title;
+                message.channel.send(`Now playing ${title}`);
             } else {
                 message.reply('Wtf song is that?');
             }
@@ -58,6 +61,15 @@ const handleYouTubeSearch = (args, connection, message) => {
     });
 };
 
+const handleStop = async message => {
+    if (!message.member.voiceChannel) {
+        message.reply('You need to be in a voice channel to stop music!');
+    } else {
+        message.member.voiceChannel.leave();
+    }
+};
+
 module.exports = {
-    handlePlayYouTube
+    handlePlayYouTube,
+    handleStop,
 };
