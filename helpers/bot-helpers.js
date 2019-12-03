@@ -8,6 +8,11 @@ const handleCommand = message => {
     }
 };
 
+const handleKick = message => {
+    message.member.voiceChannel.leave();
+};
+
 module.exports = {
     handleCommand,
+    handleKick,
 };

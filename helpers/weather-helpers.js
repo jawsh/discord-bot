@@ -1,5 +1,3 @@
-const Discord = require('discord.js');
-
 const axios = require('axios');
 const config = require('../config.json');
 const _ = require('lodash');
@@ -10,7 +8,7 @@ const handleWeather = (message, args) => {
     const country = args[1];
     axios
         .get(
-            `${weatherUrl}?q=${city},${country}&units=metric&APPID=${config.weatherkey}`,
+            `${weatherUrl}?q=${city},${country}&units=metric&APPID=${config.weatherkey}`
         )
         .then(res => {
             const list = res.data.list;
@@ -44,7 +42,7 @@ const handleWeather = (message, args) => {
             console.log(`Sent weather data for ${res.data.city.name}`);
         })
         .catch(error => {
-            console.log(error.response.data.message);
+            console.error(error.response.data.message);
             message.channel.send(error.response.data.message);
         });
 };
@@ -55,7 +53,7 @@ const formatWeather = week => {
         const day = date.toString().substring(0, 4);
         const temp = d.temp;
         const desc = d.desc;
-        return `${day} - ${desc} - ${temp}°`;
+        return `${day} - ${desc} - ${temp}°C`;
     });
 };
 
