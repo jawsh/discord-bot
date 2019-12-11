@@ -1,0 +1,6 @@
+!ping
+!weather {location}
+!play {song}
+!kick
+!stop
+!help
